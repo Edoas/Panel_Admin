@@ -2,10 +2,29 @@ class Tabla extends HTMLElement {
   constructor () {
     super()
     this.shadow = this.attachShadow({ mode: 'open' })
+    //this.data = []
   }
 
-  connectedCallback () {
-    this.render()
+  async connectedCallback () {
+    await this.loadData()
+    await this.render()
+  }
+
+  async loadData (){
+    this.data = [
+      {
+        name: "Carlos",
+        email: "carlossedagambin@gmail.com",
+        createdAt: "2024-09-25",
+        updatedAt: "2024-09-25"
+      },
+      {
+        name: "Emilio",
+        email: "emilio@gmail.com",
+        createdAt: "2024-09-25",
+        updatedAt: "2024-09-25"
+      }
+    ]
   }
 
   render(){
@@ -50,6 +69,8 @@ class Tabla extends HTMLElement {
             height: 2rem;
             width: 2rem;
         }
+
+
 
         .tabla-registros{
             align-items: center;
@@ -138,29 +159,8 @@ class Tabla extends HTMLElement {
           </div>
         </div>
 
-        <div class="tabla-registros">
-            <div class="tabla-registro">
-              <div class="tabla-registro-cabecera">
-                <div class="tabla-registro-botones">
-                  <div class="registro-boton-crear">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>pencil</title><path d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" /></svg>
-                  </div>
-                <div class="registro-boton-borrar">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>delete</title><path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" /></svg>
-                  </div>
-                </div>
-              </div>
-              <div class="tabla-registro-cuerpo">
-                <ul>
-                  <li><span>nombre</span>Carlos</li>
-                  <li><span>email</span>carlossedagambin@gmail.com</li>
-                  <li><span>fecha de creación</span>2024-09-09</li>
-                  <li><span>fecha de actualización</span> 2024-09-09</li>
-                </ul>
-              </div>
-          </div>
-        </div>
-
+        <div class="tabla-registros"></div>
+ 
         <div class="tabla-footer">
           <div class="tabla-footer-informacion">
             <span>1 registro en total, mostrando 10 por página</span>
@@ -170,9 +170,100 @@ class Tabla extends HTMLElement {
           </div>
         </div> 
       </div>
-
-
     `
+
+    // <div class="tabla-registro">
+    //         <div class="tabla-registro-cabecera">
+    //           <div class="tabla-registro-botones">
+    //             <div class="registro-boton-crear">
+    //               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>pencil</title><path d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" /></svg>
+    //             </div>
+    //           <div class="registro-boton-borrar">
+    //               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>delete</title><path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" /></svg>
+    //             </div>
+    //           </div>
+    //         </div>
+    //         <div class="tabla-registro-cuerpo">
+    //           <ul>
+    //             <li><span>nombre</span>Carlos</li>
+    //             <li><span>email</span>carlossedagambin@gmail.com</li>
+    //             <li><span>fecha de creación</span>2024-09-09</li>
+    //             <li><span>fecha de actualización</span> 2024-09-09</li>
+    //           </ul>
+    //         </div>
+    //</div>
+
+    
+    const registers = this.shadow.querySelector('.tabla-registros')
+
+    this.data.forEach(element => {
+
+      const register = document.createElement('div')
+      register.classList.add('tabla-registro')
+      registers.appendChild(register)
+
+      const registerHeaders =  document.createElement('div')
+      registerHeaders.classList.add('tabla-registro-cabecera')
+      register.appendChild(registerHeaders)
+
+      const registerButtons = document.createElement('div')
+      registerButtons.classList.add ('tabla-registro-botones')
+      registerHeaders.appendChild(registerButtons)
+
+      const createRegisterButton = document.createElement('div')
+      createRegisterButton.classList.add ('registro-boton-crear')
+      createRegisterButton.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z" />
+      </svg>`;
+      registerButtons.appendChild(createRegisterButton)
+
+      const createDeleteButton = document.createElement('div')
+      createDeleteButton.innerHTML = `
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z" />
+      </svg>`;
+      createDeleteButton.classList.add ('registro-boton-borrar')
+      registerButtons.appendChild(createDeleteButton)
+
+      const tableRegisterBody = document.createElement('div')
+      tableRegisterBody.classList.add ('tabla-registro-cuerpo')
+      register.appendChild(tableRegisterBody)
+
+      // Crear lista dinámica (ul) dentro del cuerpo del registro
+      const listaDinamica = document.createElement('ul')
+      tableRegisterBody.appendChild(listaDinamica);
+
+      const liName = document.createElement('li')
+      const liEmail = document.createElement('li')
+      const liCreatedAt = document.createElement('li')
+      const liUpdatedAt = document.createElement('li')
+
+      const spanName = document.createElement('span')
+      spanName.textContent = 'Nombre: '; 
+      liName.appendChild(spanName);     
+      liName.appendChild(document.createTextNode(element.name)); 
+
+      const spanEmail = document.createElement('span')
+      spanEmail.textContent = 'Email: '
+      liEmail.appendChild(spanEmail)
+      liEmail.appendChild(document.createTextNode(element.email))
+    
+      const spanCreatedAt = document.createElement('span')
+      spanCreatedAt.innerText = 'Fecha de Creación: '
+      liCreatedAt.appendChild(spanCreatedAt)
+      liCreatedAt.appendChild(document.createTextNode(element.createdAt))
+
+      const spanUpdatedAt = document.createElement('span')
+      spanUpdatedAt.innerText = 'Fecha de Actualización: '
+      liUpdatedAt.appendChild(spanUpdatedAt)
+      liUpdatedAt.appendChild(document.createTextNode(element.updatedAt))
+
+      listaDinamica.appendChild(liName)
+      listaDinamica.appendChild(liEmail)
+      listaDinamica.appendChild(liCreatedAt)
+      listaDinamica.appendChild(liUpdatedAt)
+    })
   }
 }
 customElements.define('tabla-component', Tabla)
